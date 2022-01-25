@@ -1,4 +1,3 @@
-import background from './images/Praia.jpg'
 import { Box, Button, Text, TextField, Image } from '@skynexui/components';
 
 import appConfig from '../config.json'
