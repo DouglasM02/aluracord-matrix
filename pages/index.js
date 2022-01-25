@@ -31,7 +31,6 @@ function GlobalStyle() {
 }
 
 function Titulo(props) {
-    console.log(background)
     console.log(props)
     const Tag = props.tag || 'h1'
     return (
