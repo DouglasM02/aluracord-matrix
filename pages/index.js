@@ -1,5 +1,5 @@
 import { Box, Button, Text, TextField, Image } from '@skynexui/components';
-import React from 'react';
+import React  from 'react';
 import { useRouter } from 'next/router'
 
 import appConfig from '../config.json'
@@ -21,6 +21,7 @@ function Titulo(props) {
         </>
     );
 }
+
 //function HomePage() {
 //  return (
 //    <div>
@@ -38,8 +39,6 @@ export default function PaginaInicial() {
   //const username = 'DouglasM02';
   const [username, setUsername] = React.useState('DouglasM02')
   const roteamento = useRouter()
-
-  //console.log(roteamento)
 
   return (
     <>
@@ -93,7 +92,7 @@ export default function PaginaInicial() {
               value={username}
               onChange={(event)=>{
                 console.log('usuario digitou', event.target.value)
-                
+
                 //adquirir o valor do parametro event.
                 const value = event.target.value
                 // colocar o valor na função de estado do React, para que este possa fazer a alteração do valor onde for necessário
@@ -127,7 +126,7 @@ export default function PaginaInicial() {
           {/* Photo Area */}
           <Box
             styleSheet={{
-              display: 'flex',
+              display: username.length > 2 ? 'flex':'none',
               flexDirection: 'column',
               alignItems: 'center',
               maxWidth: '200px',
@@ -139,8 +138,9 @@ export default function PaginaInicial() {
               flex: 1,
               minHeight: '240px',
             }}
-          >
-            <Image
+          > 
+          
+          <Image
               styleSheet={{
                 borderRadius: '50%',
                 marginBottom: '16px',
@@ -158,6 +158,7 @@ export default function PaginaInicial() {
             >
               {username}
             </Text>
+            
           </Box>
           {/* Photo Area */}
         </Box>
