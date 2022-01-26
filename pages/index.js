@@ -1,25 +1,25 @@
 import { Box, Button, Text, TextField, Image } from '@skynexui/components';
-import React  from 'react';
+import React, { useEffect } from 'react';
 import { useRouter } from 'next/router'
 
 import appConfig from '../config.json'
 
 
 function Titulo(props) {
-    console.log(props)
-    const Tag = props.tag || 'h1'
-    return (
-        <>
-            <Tag>{props.children}</Tag>
-            <style jsx>{`
+  console.log(props)
+  const Tag = props.tag || 'h1'
+  return (
+    <>
+      <Tag>{props.children}</Tag>
+      <style jsx>{`
                 ${Tag} {
                     color: ${appConfig.theme.colors.primary['900']};
                     font-size: 24px;
                     font-weight: 700;
                 }
                 `}</style>
-        </>
-    );
+    </>
+  );
 }
 
 //function HomePage() {
@@ -34,13 +34,50 @@ function Titulo(props) {
 //}
 
 //export default HomePage
+function chamadaApiGit(user) {
+  return fetch(`https://api.github.com/users/${user}`)
+    .then((response) => {
+      return response.json()
+
+    })
+    .then((response) => {
+      return response
+    })
+    .catch((error) => {
+      console.log(error)
+    })
+}
+
 
 export default function PaginaInicial() {
+
+
+
   //const username = 'DouglasM02';
-  const [username, setUsername] = React.useState('DouglasM02')
+  const [username, setUsername] = React.useState('')
+  const [data, setData] = React.useState('')
   const roteamento = useRouter()
 
+  let dados = null
+
+
+  useEffect(() => {
+    dados = chamadaApiGit(username)
+    dados.then((response) => {
+      setData(response)
+    }).catch((error) => {
+      console.log(error)
+    })
+  }, [username])
+
+  console.log(data)
+
+
   return (
+
+
+
+
     <>
       {/*<GlobalStyle />*/}
       <Box
@@ -48,8 +85,8 @@ export default function PaginaInicial() {
           display: 'flex', alignItems: 'center', justifyContent: 'center',
           //backgroundColor: appConfig.theme.colors.primary[500],
           //backgroundImage: 'url(https://virtualbackgrounds.site/wp-content/uploads/2020/08/the-matrix-digital-rain.jpg)',
-          backgroundImage:"url('https://i.postimg.cc/FFW34Dkg/Praia.jpg')",
-          backgroundRepeat: 'no-repeat', 
+          backgroundImage: "url('https://i.postimg.cc/FFW34Dkg/Praia.jpg')",
+          backgroundRepeat: 'no-repeat',
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           backgroundBlendMode: 'multiply',
@@ -73,7 +110,7 @@ export default function PaginaInicial() {
           {/* Formulário */}
           <Box
             as="form"
-            onSubmit = {(event) => {
+            onSubmit={(event) => {
               event.preventDefault()
               console.log('Alguém submeteu o form')
               roteamento.push('/chat')
@@ -90,7 +127,7 @@ export default function PaginaInicial() {
 
             <TextField
               value={username}
-              onChange={(event)=>{
+              onChange={(event) => {
                 console.log('usuario digitou', event.target.value)
 
                 //adquirir o valor do parametro event.
@@ -126,7 +163,7 @@ export default function PaginaInicial() {
           {/* Photo Area */}
           <Box
             styleSheet={{
-              display: username.length > 2 ? 'flex':'none',
+              display: username.length > 2 ? 'flex' : 'none',
               flexDirection: 'column',
               alignItems: 'center',
               maxWidth: '200px',
@@ -138,14 +175,15 @@ export default function PaginaInicial() {
               flex: 1,
               minHeight: '240px',
             }}
-          > 
-          
-          <Image
+          >
+
+            <Image
               styleSheet={{
                 borderRadius: '50%',
                 marginBottom: '16px',
               }}
-              src={`https://github.com/${username}.png`}
+              src={data.avatar_url}
+            //{`https://github.com/${username}.png`}
             />
             <Text
               variant="body4"
@@ -153,12 +191,38 @@ export default function PaginaInicial() {
                 color: appConfig.theme.colors.primary['100'],
                 backgroundColor: appConfig.theme.colors.primary['900'],
                 padding: '3px 10px',
-                borderRadius: '1000px'
+                borderRadius: '1000px',
+                marginBottom: '7px'
               }}
             >
               {username}
             </Text>
-            
+
+            <Text
+              variant="body4"
+              styleSheet={{
+                color: appConfig.theme.colors.primary['100'],
+                backgroundColor: appConfig.theme.colors.primary['900'],
+                padding: '3px 10px',
+                borderRadius: '1000px',
+                marginBottom: '7px'
+              }}
+            >
+              Seguindo {data.followers}
+            </Text>
+
+            <Text
+              variant="body4"
+              styleSheet={{
+                color: appConfig.theme.colors.primary['100'],
+                backgroundColor: appConfig.theme.colors.primary['900'],
+                padding: '3px 10px',
+                borderRadius: '1000px',
+              }}
+            >
+              Seguido por {data.following}
+            </Text>
+
           </Box>
           {/* Photo Area */}
         </Box>
