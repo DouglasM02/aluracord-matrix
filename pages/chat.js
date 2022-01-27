@@ -231,11 +231,18 @@ function MessageList(props) {
                                 onClick={(event) => {
                                     event.preventDefault()
 
-                                    console.log(mensagem)
+                                    //console.log(mensagem)
 
                                     const filter = props.mensagens.filter((filtered) => filtered.id !== mensagem.id)
 
-                                    props.setMensagens(filter)
+                                    supabaseClient
+                                        .from('mensagens')
+                                        .delete()
+                                        .match({ id: mensagem.id })
+                                        .then(() => {
+                                            props.setMensagens(filter)
+                                        })
+
                                     //console.log(props.mensagens)
                                     //console.log('id', mensagem.id)
 
