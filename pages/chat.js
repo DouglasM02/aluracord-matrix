@@ -13,7 +13,7 @@ export default function ChatPage() {
     function handleNovaMensagem(novaMensagem) {
         const mensagem = {
             id: listaDeMensagens.length + 1,
-            de: 'vanessametonini',
+            de: 'douglas',
             texto: novaMensagem,
         }
         setListaDeMensagens([
@@ -66,7 +66,7 @@ export default function ChatPage() {
                     }}
                 >
                     {/*Ta mudando o valor: {mensagem}*/}
-                    <MessageList mensagens={listaDeMensagens} />
+                    <MessageList mensagens={listaDeMensagens} setMensagens={setListaDeMensagens} />
                     {/* {listaDeMensagens.map((mensagemAtual) => {
                         //console.log(mensagemAtual)
                         return (
@@ -111,6 +111,17 @@ export default function ChatPage() {
                                 color: appConfig.theme.colors.neutrals[600],
                             }}
                         />
+                        <Button
+                            onClick={(event) => {
+                                event.preventDefault()
+                                console.log('Enviando...')
+                                handleNovaMensagem(mensagem)
+                            }
+                            }
+                            variant='tertiary'
+                            colorVariant='positive'
+                            label='Enviar'
+                        />
                     </Box>
                 </Box>
             </Box>
@@ -138,6 +149,8 @@ function Header() {
 
 function MessageList(props) {
     console.log('MessageList', props);
+
+
     return (
         <Box
             tag="ul"
@@ -178,7 +191,7 @@ function MessageList(props) {
                                     display: 'inline-block',
                                     marginRight: '8px',
                                 }}
-                                src={`https://github.com/vanessametonini.png`}
+                                src={`https://github.com/DouglasM02.png`}
                             />
                             <Text tag="strong">
                                 {mensagem.de}
@@ -193,6 +206,29 @@ function MessageList(props) {
                             >
                                 {(new Date().toLocaleDateString())}
                             </Text>
+                            <Button
+                                onClick={(event) => {
+                                    event.preventDefault()
+
+                                    console.log(mensagem)
+
+                                    const filter = props.mensagens.filter((filtered) => filtered.id !== mensagem.id)
+
+                                    props.setMensagens(filter)
+                                    //console.log(props.mensagens)
+                                    //console.log('id', mensagem.id)
+
+
+                                }}
+                                styleSheet={{
+                                    height: '10px',
+                                    marginLeft: '75%'
+                                }}
+                                variant='primary'
+                                colorVariant='dark'
+                                label='excluir'
+                            />
+
                         </Box>
                         {mensagem.texto}
                     </Text>

@@ -34,6 +34,8 @@ function Titulo(props) {
 //}
 
 //export default HomePage
+
+// Fazendo uma função para consumir API GIT
 function chamadaApiGit(user) {
   return fetch(`https://api.github.com/users/${user}`)
     .then((response) => {
@@ -60,7 +62,7 @@ export default function PaginaInicial() {
 
   let dados = null
 
-
+  // Usando useEffect para consumir a API na pagina inicial cada vez que a página renderizar
   useEffect(() => {
     dados = chamadaApiGit(username)
     dados.then((response) => {
@@ -198,6 +200,7 @@ export default function PaginaInicial() {
               {username}
             </Text>
 
+            {/* colocando a quantidade de pessoas que segue e pessoas que seguem ele */}
             <Text
               variant="body4"
               styleSheet={{
