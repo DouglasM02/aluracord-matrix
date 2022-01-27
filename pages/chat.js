@@ -1,7 +1,12 @@
 import { Box, Text, TextField, Image, Button } from '@skynexui/components';
 import React from 'react';
 import appConfig from '../config.json';
+import { createClient } from '@supabase/supabase-js'
 
+
+const SUPABASE_ANON_KEY = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL
+const supabaseClient = createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
 
 
 export default function ChatPage() {
@@ -10,18 +15,34 @@ export default function ChatPage() {
     const [listaDeMensagens, setListaDeMensagens] = React.useState([])
     // ./Sua lógica vai aqui
 
+    React.useEffect(() => {
+        supabaseClient.from('mensagens')
+            .select('*')
+            .order('id', { ascending: false })
+            .then(({ data }) => {
+                setListaDeMensagens(data)
+            })
+    }, [])
+
     function handleNovaMensagem(novaMensagem) {
         const mensagem = {
-            id: listaDeMensagens.length + 1,
+            //id: listaDeMensagens.length + 1,
             de: 'douglas',
             texto: novaMensagem,
         }
-        setListaDeMensagens([
-            mensagem,
-            ...listaDeMensagens,
 
-        ])
-        setMensagem('')
+        supabaseClient.from('mensagens')
+            .insert(mensagem)
+            .then(({ data }) => {
+                setListaDeMensagens([
+                    data[0],
+                    ...listaDeMensagens,
+
+                ])
+                setMensagem('')
+            })
+
+        /**/
     }
 
     return (
