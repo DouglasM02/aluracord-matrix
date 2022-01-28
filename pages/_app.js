@@ -1,4 +1,5 @@
 
+
 function GlobalStyle() {
   return (
     <style global jsx>{`
@@ -27,15 +28,15 @@ function GlobalStyle() {
     `}</style>
   );
 }
-export default function MyApp({Component, PageProps}) {
-    console.log('roda em todas as páginas!')
+export default function MyApp({ Component, PageProps }) {
+  //console.log('roda em todas as páginas!')
 
-    return (
+  return (
+
     <>
-        <GlobalStyle />
-        < Component {...PageProps} />
+      <GlobalStyle />
+      < Component {...PageProps} />
     </>
-    
-    
-    )
+
+  )
 }
