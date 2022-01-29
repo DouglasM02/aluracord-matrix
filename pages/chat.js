@@ -1,4 +1,5 @@
 import { Box, Text, TextField, Image, Button } from '@skynexui/components';
+import { Chip } from '@mui/material'
 import React from 'react';
 import appConfig from '../config.json';
 import { createClient } from '@supabase/supabase-js'
@@ -11,11 +12,15 @@ const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL
 const supabaseClient = createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
 
 
-function escutaMensagensEmTempoReal(adicionaMensagem) {
+function escutaMensagensEmTempoReal(adicionaMensagem, listaComItemRemovido) {
     return supabaseClient
         .from('mensagens')
         .on('INSERT', (respostaLive) => {
             adicionaMensagem(respostaLive.new);
+        })
+        .on('DELETE', (deleted) => {
+            //console.log(deleted)
+            listaComItemRemovido(deleted.old)
         })
         .subscribe();
 }
@@ -55,7 +60,23 @@ export default function ChatPage() {
                     ...valorAtualDaLista,
                 ]
             });
-        });
+        },
+            (deleted) => {
+                console.log('Id: ', deleted.id)
+                setListaDeMensagens((novaLista) => {
+                    //console.log('nova lista', novaLista)
+
+                    const filter = novaLista.filter((filtered) => filtered.id !== deleted.id)
+
+                    //console.log('filtrado ', filter)
+
+                    return [
+                        ...filter
+                    ]
+
+                })
+
+            });
 
         return () => {
             subscription.unsubscribe();
@@ -254,10 +275,12 @@ function MessageList(props) {
                         key={mensagem.id}
                         tag="li"
                         styleSheet={{
+                            maxWidth: '300px',
+                            wordWrap: 'break-word',
                             borderRadius: '5px',
-                            padding: '6px',
-                            marginBottom: '12px',
-                            backgroundColor: appConfig.theme.colors.primary[400],
+                            padding: '10px',
+                            marginBottom: '15px',
+                            backgroundColor: appConfig.theme.colors.primary[500],
                             hover: {
                                 backgroundColor: appConfig.theme.colors.primary[700],
                             }
@@ -265,9 +288,12 @@ function MessageList(props) {
                     >
                         <Box
                             styleSheet={{
-                                marginBottom: '8px',
+                                display: 'flex',
+                                alignItems: 'center',
+                                margin: '8px 3px',
                             }}
                         >
+
                             <Image
                                 styleSheet={{
                                     width: '20px',
@@ -284,41 +310,40 @@ function MessageList(props) {
                             <Text
                                 styleSheet={{
                                     fontSize: '10px',
-                                    marginLeft: '8px',
-                                    color: appConfig.theme.colors.neutrals[300],
+                                    marginLeft: '10px',
+                                    color: appConfig.theme.colors.neutrals[200],
                                 }}
                                 tag="span"
                             >
                                 {(new Date().toLocaleDateString())}
                             </Text>
-                            <Button
+
+                            <Chip
+                                label="delete"
+                                color="error"
+                                variant="filled"
+                                sx={{
+                                    marginLeft: '10%',
+                                }}
+                                //deleteIcon={<DeleteIcon />}
                                 onClick={(event) => {
                                     event.preventDefault()
 
                                     //console.log(mensagem)
 
-                                    const filter = props.mensagens.filter((filtered) => filtered.id !== mensagem.id)
+                                    //const filter = props.mensagens.filter((filtered) => filtered.id !== mensagem.id)
 
                                     supabaseClient
                                         .from('mensagens')
                                         .delete()
                                         .match({ id: mensagem.id })
                                         .then(() => {
-                                            props.setMensagens(filter)
+                                            //props.setMensagens(filter)
                                         })
-
                                     //console.log(props.mensagens)
                                     //console.log('id', mensagem.id)
-
-
                                 }}
-                                styleSheet={{
-                                    height: '10px',
-                                    marginLeft: '75%'
-                                }}
-                                variant='primary'
-                                colorVariant='dark'
-                                label='excluir'
+
                             />
 
                         </Box>
