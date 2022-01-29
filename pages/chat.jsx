@@ -121,13 +121,13 @@ export default function ChatPage() {
         <Box
             styleSheet={{
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
-                backgroundColor: appConfig.theme.colors.primary[100],
-                backgroundImage: `url(https://i.postimg.cc/FFW34Dkg/Praia.jpg)`,
+                backgroundImage: `url('https://i.postimg.cc/cJqNKW3d/jonathan-borba-y-VRl-Zojv-Gy0-unsplash-1.jpg')`,
                 backgroundRepeat: 'no-repeat',
                 backgroundSize: 'cover',
                 backgroundPosition: 'center',
+                backgroundColor: '#rgba(2, 58, 83, 0.5)',
                 backgroundBlendMode: 'multiply',
-                color: appConfig.theme.colors.primary['900'],
+                color: '#598392',
 
             }}
         >
@@ -138,7 +138,7 @@ export default function ChatPage() {
                     flex: 1,
                     boxShadow: '0 2px 10px 0 rgb(0 0 0 / 20%)',
                     borderRadius: '5px',
-                    backgroundColor: "rgba(63, 145, 66, 0.75)",
+                    backgroundColor: "#124559",
                     height: '100%',
                     maxWidth: '95%',
                     maxHeight: '95vh',
@@ -152,7 +152,7 @@ export default function ChatPage() {
                         display: 'flex',
                         flex: 1,
                         height: '80%',
-                        backgroundColor: "rgba(255, 255, 255, 0.35)",
+                        backgroundColor: "#AEC3B0",
                         flexDirection: 'column',
                         borderRadius: '5px',
                         padding: '16px',
@@ -207,9 +207,9 @@ export default function ChatPage() {
                                 resize: 'none',
                                 borderRadius: '10px',
                                 padding: '6px 8px',
-                                backgroundColor: "rgba(255, 255, 255, 0.75)",
+                                backgroundColor: "#EFF6E0",
                                 marginRight: '12px',
-                                color: appConfig.theme.colors.neutrals[600],
+                                color: '#124559',
                             }}
                         />
 
@@ -281,7 +281,7 @@ function MessageList(props) {
                 display: 'flex',
                 flexDirection: 'column-reverse',
                 flex: 1,
-                color: appConfig.theme.colors.neutrals["000"],
+                color: '#EFF6E0',
                 marginBottom: '16px',
             }}
         >
@@ -309,9 +309,9 @@ function MessageList(props) {
                             padding: '10px',
                             marginBottom: '15px',
                             marginRight: 'auto',
-                            backgroundColor: appConfig.theme.colors.primary[500],
+                            backgroundColor: '#598392',
                             hover: {
-                                backgroundColor: appConfig.theme.colors.primary[700],
+                                backgroundColor: '#4E717E',
                             }
                         }}
                     >
@@ -321,14 +321,17 @@ function MessageList(props) {
                                 alignItems: 'center',
                                 marginBottom: '10px',
                                 padding: '7px 3px',
-                                borderBottom: `3px solid ${appConfig.theme.colors.primary['400']}`
+                                borderBottom: `3px solid #4E717E`,
+                                hover: {
+                                    borderBottom: `3px solid #598392`
+                                },
                             }}
                         >
 
                             <Box
                                 styleSheet={{
                                     marginRight: '7px',
-                                    borderRight: `solid 2px ${appConfig.theme.colors.primary['400']}`
+                                    
                                 }}
 
                                 onMouseEnter={() => {
@@ -347,7 +350,7 @@ function MessageList(props) {
                                         styleSheet={{
                                             width: '35px',
                                             height: '35px',
-                                            borderRadius: '50%',
+                                            borderRadius: '10%',
                                             display: 'inline-block',
                                             marginRight: '5px',
                                             /*hover: {
@@ -371,10 +374,11 @@ function MessageList(props) {
                                             padding: '5px',
                                             marginLeft: 'auto',
                                             marginRight: 'auto',
+                                            borderRadius:'10%',
                                             flexDirection: 'column',
 
-                                            backgroundColor: `${appConfig.theme.colors.primary['500']}`,
-                                            border: `2px solid ${appConfig.theme.colors.primary['500']}`,
+                                            backgroundColor: `#124559`,
+                                            border: `2px #5D8898}`,
                                             hover: {
                                                 transform: 'scale(1.5)',
                                                 transition: '2s ease',
@@ -399,7 +403,7 @@ function MessageList(props) {
                                             styleSheet={{
                                                 width: '35px',
                                                 height: '35px',
-                                                borderRadius: '50%',
+                                                borderRadius: '10%',
                                                 display: 'inline-block',
                                                 marginRight: '5px',
                                                 marginBottom: '5px',
@@ -432,7 +436,7 @@ function MessageList(props) {
                                     fontSize: '10px',
                                     marginLeft: '10px',
                                     //marginRight: '10px',
-                                    color: appConfig.theme.colors.neutrals[100],
+                                    color: '#EFF6E0',
                                 }}
                                 tag="span"
                             >
@@ -447,7 +451,7 @@ function MessageList(props) {
                                     maxHeight: '35px',
                                     marginLeft: 'auto',
                                     paddingRight: '3px',
-                                    color: `${appConfig.theme.colors.neutrals['050']}`,
+                                    color: `#EFF6E0`,
                                     hover: {
                                         transition: '.50s ease',
                                         backgroundColor: `${appConfig.theme.colors.neutrals['050']}`,

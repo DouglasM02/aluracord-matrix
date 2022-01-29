@@ -13,7 +13,7 @@ function Titulo(props) {
       <Tag>{props.children}</Tag>
       <style jsx>{`
                 ${Tag} {
-                    color: ${appConfig.theme.colors.primary['900']};
+                    color: '#EFF6E0';
                     font-size: 24px;
                     font-weight: 700;
                 }
@@ -87,10 +87,11 @@ export default function PaginaInicial() {
           display: 'flex', alignItems: 'center', justifyContent: 'center',
           //backgroundColor: appConfig.theme.colors.primary[500],
           //backgroundImage: 'url(https://virtualbackgrounds.site/wp-content/uploads/2020/08/the-matrix-digital-rain.jpg)',
-          backgroundImage: "url('https://i.postimg.cc/FFW34Dkg/Praia.jpg')",
+          backgroundImage: "url('https://i.postimg.cc/cJqNKW3d/jonathan-borba-y-VRl-Zojv-Gy0-unsplash-1.jpg')",
           backgroundRepeat: 'no-repeat',
           backgroundSize: 'cover',
           backgroundPosition: 'center',
+          backgroundColor: '#rgba(2, 58, 83, 0.5)',
           backgroundBlendMode: 'multiply',
         }}
       >
@@ -106,7 +107,7 @@ export default function PaginaInicial() {
             width: '100%', maxWidth: '700px',
             borderRadius: '5px', padding: '32px', margin: '16px',
             boxShadow: '0 2px 10px 0 rgb(0 0 0 / 20%)',
-            backgroundColor: "rgba(203,210,217,0.7)",
+            backgroundColor: "#023A53",
           }}
         >
           {/* Formulário */}
@@ -122,8 +123,10 @@ export default function PaginaInicial() {
               width: { xs: '100%', sm: '50%' }, textAlign: 'center', marginBottom: '32px',
             }}
           >
-            <Titulo tag="h2">Boas vindas de volta!</Titulo>
-            <Text variant="body3" styleSheet={{ marginBottom: '40px', color: appConfig.theme.colors.neutrals['700'] }}>
+            <Titulo style={{
+              color: '#EFF6E0',
+            }} tag="h2">Boas vindas de volta!</Titulo>
+            <Text variant="body3" styleSheet={{ marginBottom: '40px', color: '#598392' }}>
               {appConfig.name}
             </Text>
 
@@ -140,10 +143,10 @@ export default function PaginaInicial() {
               fullWidth
               textFieldColors={{
                 neutral: {
-                  textColor: appConfig.theme.colors.neutrals['000'],
-                  mainColor: appConfig.theme.colors.primary['500'],
-                  mainColorHighlight: appConfig.theme.colors.primary['700'],
-                  backgroundColor: "rgba(63, 145, 66, 0.75)",
+                  textColor: '#023A53',
+                  mainColor: '#AEC3B0',
+                  mainColorHighlight: '#598392',
+                  backgroundColor: "rgba(174, 195, 176, 0.75)",
                 },
               }}
             />
@@ -152,10 +155,10 @@ export default function PaginaInicial() {
               label='Entrar'
               fullWidth
               buttonColors={{
-                contrastColor: appConfig.theme.colors.neutrals["000"],
-                mainColor: appConfig.theme.colors.primary['600'],
-                mainColorLight: appConfig.theme.colors.primary['400'],
-                mainColorStrong: appConfig.theme.colors.primary['400'],
+                contrastColor: '#124559',
+                mainColor: '#598392',
+                mainColorLight: '#AEC3B0',
+                mainColorStrong: '#AEC3B0',
               }}
             />
           </Box>
@@ -170,9 +173,9 @@ export default function PaginaInicial() {
               alignItems: 'center',
               maxWidth: '200px',
               padding: '16px',
-              backgroundColor: "rgba(63, 145, 66, 0.75)",
+              backgroundColor: "#124559",
               border: '1px solid',
-              borderColor: appConfig.theme.colors.primary['700'],
+              borderColor: '#598392',
               borderRadius: '10px',
               flex: 1,
               minHeight: '240px',
@@ -190,8 +193,8 @@ export default function PaginaInicial() {
             <Text
               variant="body4"
               styleSheet={{
-                color: appConfig.theme.colors.primary['100'],
-                backgroundColor: appConfig.theme.colors.primary['900'],
+                color: '#023A53',
+                backgroundColor: '#AEC3B0',
                 padding: '3px 10px',
                 borderRadius: '1000px',
                 marginBottom: '7px'
@@ -204,8 +207,8 @@ export default function PaginaInicial() {
             <Text
               variant="body4"
               styleSheet={{
-                color: appConfig.theme.colors.primary['100'],
-                backgroundColor: appConfig.theme.colors.primary['900'],
+                color: '#023A53',
+                backgroundColor: '#AEC3B0',
                 padding: '3px 10px',
                 borderRadius: '1000px',
                 marginBottom: '7px'
@@ -217,8 +220,8 @@ export default function PaginaInicial() {
             <Text
               variant="body4"
               styleSheet={{
-                color: appConfig.theme.colors.primary['100'],
-                backgroundColor: appConfig.theme.colors.primary['900'],
+                color: '#023A53',
+                backgroundColor: '#AEC3B0',
                 padding: '3px 10px',
                 borderRadius: '1000px',
               }}
@@ -229,6 +232,7 @@ export default function PaginaInicial() {
           </Box>
           {/* Photo Area */}
         </Box>
+
       </Box>
     </>
   );
