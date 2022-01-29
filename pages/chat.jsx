@@ -1,10 +1,10 @@
-import { Box, Text, TextField, Image, Button } from '@skynexui/components';
-import { Chip } from '@mui/material'
+import { Box, Text, TextField, Image, Button, Icon } from '@skynexui/components';
 import React from 'react';
 import appConfig from '../config.json';
 import { createClient } from '@supabase/supabase-js'
 import { useRouter } from 'next/router';
 import { ButtonSendSticker } from '../src/components/ButtonSendSticker';
+import { Skeleton } from '@mui/material';
 
 // Como fazer AJAX: https://medium.com/@omariosouto/entendendo-como-fazer-ajax-com-a-fetchapi-977ff20da3c6
 const SUPABASE_ANON_KEY = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
@@ -31,6 +31,8 @@ export default function ChatPage() {
     const usuarioLogado = roteamento.query.username;
     const [mensagem, setMensagem] = React.useState('')
     const [listaDeMensagens, setListaDeMensagens] = React.useState([])
+    const [overBoolean, setOverBoolean] = React.useState(false)
+    const [dataLoaded,setDataLoaded] = React.useState(false)
     // ./Sua lógica vai aqui
     //console.log(objeto)
     React.useEffect(() => {
@@ -41,9 +43,12 @@ export default function ChatPage() {
             .then(({ data }) => {
                 //console.log('Dados de consulta', data)
                 setListaDeMensagens(data)
+                setDataLoaded(true)
             })
 
-        const subscription = escutaMensagensEmTempoReal((novaMensagem) => {
+            const subscription = escutaMensagensEmTempoReal((novaMensagem) => {
+
+            setDataLoaded(false)
             //console.log('Nova mensagem:', novaMensagem);
             //console.log('listaDeMensagens:', listaDeMensagens);
             // Quero reusar um valor de referencia (objeto/array) 
@@ -54,6 +59,7 @@ export default function ChatPage() {
             //     ...listaDeMensagens
             // ])
             setListaDeMensagens((valorAtualDaLista) => {
+                setDataLoaded(true)
                 //console.log('valorAtualDaLista:', valorAtualDaLista);
                 return [
                     novaMensagem,
@@ -62,14 +68,15 @@ export default function ChatPage() {
             });
         },
             (deleted) => {
-                console.log('Id: ', deleted.id)
+                setDataLoaded(false)
+                //console.log('Id: ', deleted.id)
                 setListaDeMensagens((novaLista) => {
                     //console.log('nova lista', novaLista)
 
                     const filter = novaLista.filter((filtered) => filtered.id !== deleted.id)
 
                     //console.log('filtrado ', filter)
-
+                    setDataLoaded(true)
                     return [
                         ...filter
                     ]
@@ -86,6 +93,7 @@ export default function ChatPage() {
 
 
     function handleNovaMensagem(novaMensagem) {
+        setDataLoaded(false)
         const mensagem = {
             //id: listaDeMensagens.length + 1,
             de: usuarioLogado,
@@ -96,6 +104,7 @@ export default function ChatPage() {
             .from('mensagens')
             .insert([mensagem])
             .then(({ data }) => {
+                setDataLoaded(true)
                 //setListaDeMensagens([
                 //    data[0],
                 //    ...listaDeMensagens,
@@ -150,7 +159,14 @@ export default function ChatPage() {
                     }}
                 >
                     {/*Ta mudando o valor: {mensagem}*/}
-                    <MessageList mensagens={listaDeMensagens} setMensagens={setListaDeMensagens} />
+                    <MessageList
+                        mensagens={listaDeMensagens}
+                        setMensagens={setListaDeMensagens}
+                        overBoolean={overBoolean}
+                        setOverBoolean={setOverBoolean}
+                        data={dataLoaded}
+                        setData={setDataLoaded}
+                    />
                     {/* {listaDeMensagens.map((mensagemAtual) => {
                         //console.log(mensagemAtual)
                         return (
@@ -269,17 +285,30 @@ function MessageList(props) {
                 marginBottom: '16px',
             }}
         >
-            {props.mensagens.map((mensagem) => {
+            {!props.data
+            ? (
+                <Box>
+                    <Skeleton variant="rect" width={300} height={200} />
+                </Box>
+            ):
+            (
+                <>
+
+                {props.mensagens.map((mensagem) => {
                 return (
+
+                
+
                     <Text
                         key={mensagem.id}
                         tag="li"
                         styleSheet={{
-                            maxWidth: '300px',
+                            width: '300px',
                             wordWrap: 'break-word',
                             borderRadius: '5px',
                             padding: '10px',
                             marginBottom: '15px',
+                            marginRight: 'auto',
                             backgroundColor: appConfig.theme.colors.primary[500],
                             hover: {
                                 backgroundColor: appConfig.theme.colors.primary[700],
@@ -290,20 +319,111 @@ function MessageList(props) {
                             styleSheet={{
                                 display: 'flex',
                                 alignItems: 'center',
-                                margin: '8px 3px',
+                                marginBottom: '10px',
+                                padding: '7px 3px',
+                                borderBottom: `3px solid ${appConfig.theme.colors.primary['400']}`
                             }}
                         >
 
-                            <Image
+                            <Box
                                 styleSheet={{
-                                    width: '20px',
-                                    height: '20px',
-                                    borderRadius: '50%',
-                                    display: 'inline-block',
-                                    marginRight: '8px',
+                                    marginRight: '7px',
+                                    borderRight: `solid 2px ${appConfig.theme.colors.primary['400']}`
                                 }}
-                                src={`https://github.com/${mensagem.de}.png`}
-                            />
+
+                                onMouseEnter={() => {
+                                    //console.log('Adentrou aqui')
+
+                                    props.setOverBoolean(!props.overBoolean)
+                                }}
+
+                                onMouseLeave={() => {
+                                    props.setOverBoolean(!props.overBoolean)
+                                }}
+
+                            >
+                                {!props.overBoolean && (
+                                    <Image
+                                        styleSheet={{
+                                            width: '35px',
+                                            height: '35px',
+                                            borderRadius: '50%',
+                                            display: 'inline-block',
+                                            marginRight: '5px',
+                                            /*hover: {
+                                                marginLeft: 'auto',
+                                                marginRight: 'auto',
+                                                transform: 'scale(2.5)',
+                                                borderRadius: '0',
+                                                transition: '1.5s ease',
+                                            }*/
+                                        }}
+
+                                        src={`https://github.com/${mensagem.de}.png`}
+                                    />
+                                )}
+
+                                {props.overBoolean && (
+                                    <Box
+                                        styleSheet={{
+                                            position:'relative',
+                                            display: 'flex',
+                                            padding: '5px',
+                                            marginLeft: 'auto',
+                                            marginRight: 'auto',
+                                            flexDirection: 'column',
+
+                                            backgroundColor: `${appConfig.theme.colors.primary['500']}`,
+                                            border: `2px solid ${appConfig.theme.colors.primary['500']}`,
+                                            hover: {
+                                                transform: 'scale(1.5)',
+                                                transition: '2s ease',
+                                            },
+
+                                        }}
+                                    >
+                                        <a 
+                                        href={`https://github.com/${mensagem.de}`}
+
+                                        style={{
+                                                    marginLeft:'10px',
+                                                    marginRight:'auto',
+                                                    display: 'flex',
+                                                    flexDirection: 'column',
+                                                    color: 'white',
+                                                    textDecoration: 'none'
+                                                }}
+                                        
+                                        >
+                                        <Image
+                                            styleSheet={{
+                                                width: '35px',
+                                                height: '35px',
+                                                borderRadius: '50%',
+                                                display: 'inline-block',
+                                                marginRight: '5px',
+                                                marginBottom: '5px',
+                                            }}
+
+                                            src={`https://github.com/${mensagem.de}.png`}
+                                        />
+                                        <Box tag="span" styleSheet={{
+                                            display:'flex',
+                                            flexDirection:'row',
+                                            fontSize: '10px'
+                                        }}>
+                                                <Icon name="FaGithub"
+                                                    styleSheet={{
+                                                        marginRight: '5px',
+                                                    }} />
+                                                {mensagem.de}
+                                        </Box>
+                                        </a>
+                                    </Box>
+                                )}
+
+                            </Box>
+
                             <Text tag="strong">
                                 {mensagem.de}
                             </Text>
@@ -311,19 +431,28 @@ function MessageList(props) {
                                 styleSheet={{
                                     fontSize: '10px',
                                     marginLeft: '10px',
-                                    color: appConfig.theme.colors.neutrals[200],
+                                    //marginRight: '10px',
+                                    color: appConfig.theme.colors.neutrals[100],
                                 }}
                                 tag="span"
                             >
                                 {(new Date().toLocaleDateString())}
                             </Text>
 
-                            <Chip
-                                label="delete"
-                                color="error"
-                                variant="filled"
-                                sx={{
-                                    marginLeft: '10%',
+                            <Button
+                                iconName="times"
+                                variant='tertiary'
+                                styleSheet={{
+                                    maxWidth: '35px',
+                                    maxHeight: '35px',
+                                    marginLeft: 'auto',
+                                    paddingRight: '3px',
+                                    color: `${appConfig.theme.colors.neutrals['050']}`,
+                                    hover: {
+                                        transition: '.50s ease',
+                                        backgroundColor: `${appConfig.theme.colors.neutrals['050']}`,
+                                        color: `${appConfig.theme.colors.primary['500']}`
+                                    }
                                 }}
                                 //deleteIcon={<DeleteIcon />}
                                 onClick={(event) => {
@@ -350,25 +479,36 @@ function MessageList(props) {
 
                         {/* [Declarativo] */}
                         {/* Condicional: {mensagem.texto.startsWith(':sticker:').toString()} */}
-                        {mensagem.texto.startsWith(':sticker:')
-                            ? (
-                                <Image styleSheet={{
-                                    maxWidth: '75px',
-                                    maxHeight: '75px',
-                                }} src={mensagem.texto.replace(':sticker:', '')} />
-                            )
-                            : (
-                                mensagem.texto
-                            )}
+                        {
+                            mensagem.texto.startsWith(':sticker:')
+                                ? (
+                                    <Image styleSheet={{
+                                        maxWidth: '75px',
+                                        maxHeight: '75px',
+                                    }} src={mensagem.texto.replace(':sticker:', '')} />
+                                )
+                                : (
+                                    mensagem.texto
+                                )
+                        }
                         {/* if mensagem de texto possui stickers:
                            mostra a imagem
                         else 
                            mensagem.texto */}
                         {/* {mensagem.texto} */}
                     </Text>
+
+
                 )
             })}
 
-        </Box>
+
+
+
+                </>
+            ) }
+            
+
+        </Box >
     )
 }
