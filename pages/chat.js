@@ -40,6 +40,7 @@ export default function ChatPage(props) {
                     return [
                         newMessage,
                         ...valueFromNow,
+
                     ];
                 });
             },

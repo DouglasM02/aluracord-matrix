@@ -1,5 +1,7 @@
 import React from 'react';
-import { Box, Button, Text, Image } from '@skynexui/components';
+import {
+    Box, Button, Text, Image,
+} from '@skynexui/components';
 import appConfig from '../../config.json';
 
 export function ButtonSendSticker(props) {
@@ -19,7 +21,7 @@ export function ButtonSendSticker(props) {
                     }
                 }
 
-                colorVariant='none'
+                colorVariant="none"
                 styleSheet={{
                     borderRadius: '15%',
                     padding: '0 3px 0 0',
@@ -35,7 +37,7 @@ export function ButtonSendSticker(props) {
                     filter: isOpen ? 'grayscale(0)' : 'grayscale(1)',
                     hover: {
                         filter: 'grayscale(0)',
-                    }
+                    },
                 }}
                 label="😋"
                 onClick={() => setOpenState(!isOpen)}
@@ -62,7 +64,7 @@ export function ButtonSendSticker(props) {
                 >
                     <Text
                         styleSheet={{
-                            color: appConfig.theme.colors.neutrals["000"],
+                            color: appConfig.theme.colors.neutrals['000'],
                             fontWeight: 'bold',
                         }}
                     >
@@ -83,11 +85,12 @@ export function ButtonSendSticker(props) {
                             <Text
                                 onClick={() => {
                                     // console.log('[DENTRO DO COMPONENTE] Clicou no sticker:', sticker);
-                                    if (Boolean(props.onStickerClick)) {
+                                    if (props.onStickerClick) {
                                         props.onStickerClick(sticker);
                                     }
                                 }}
-                                tag="li" key={sticker}
+                                tag="li"
+                                key={sticker}
                                 styleSheet={{
                                     width: '50%',
                                     borderRadius: '5px',
@@ -97,7 +100,7 @@ export function ButtonSendSticker(props) {
                                     },
                                     hover: {
                                         backgroundColor: appConfig.theme.colors.neutrals[600],
-                                    }
+                                    },
                                 }}
                             >
                                 <Image src={sticker} />
@@ -107,5 +110,5 @@ export function ButtonSendSticker(props) {
                 </Box>
             )}
         </Box>
-    )
+    );
 }
