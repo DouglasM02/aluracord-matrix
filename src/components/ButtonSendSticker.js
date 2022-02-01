@@ -12,6 +12,14 @@ export function ButtonSendSticker(props) {
             }}
         >
             <Button
+
+                buttonColors={
+                    {
+                        none: 'none',
+                    }
+                }
+
+                colorVariant='none'
                 styleSheet={{
                     borderRadius: '15%',
                     padding: '0 3px 0 0',
@@ -23,7 +31,7 @@ export function ButtonSendSticker(props) {
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    backgroundColor: appConfig.theme.colors.neutrals[300],
+                    backgroundColor: '#124559',
                     filter: isOpen ? 'grayscale(0)' : 'grayscale(1)',
                     hover: {
                         filter: 'grayscale(0)',

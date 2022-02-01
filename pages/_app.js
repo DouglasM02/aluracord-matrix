@@ -1,8 +1,7 @@
-
-
 function GlobalStyle() {
   return (
-    <style global jsx>{`
+    <style global jsx>
+      {`
       * {
         margin: 0;
         padding: 0;
@@ -11,6 +10,9 @@ function GlobalStyle() {
       }
       body {
         font-family: 'Open Sans', sans-serif;
+      }
+      ::-webkit-scrollbar {
+      width: 0px;
       }
       /* App fit Height */ 
       html, body, #__next {
@@ -25,18 +27,20 @@ function GlobalStyle() {
         flex: 1;
       }
       /* ./App fit Height */ 
-    `}</style>
+    `}
+
+    </style>
   );
 }
 export default function MyApp({ Component, PageProps }) {
-  //console.log('roda em todas as páginas!')
+  // console.log('roda em todas as páginas!')
 
   return (
 
     <>
       <GlobalStyle />
-      < Component {...PageProps} />
+      <Component {...PageProps} />
     </>
 
-  )
+  );
 }
